@@ -1,0 +1,302 @@
+.mindfulness-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px 0;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid #34495e;
+    margin-bottom: 20px;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.nav-links {
+    list-style: none;
+}
+
+.nav-links li {
+    padding: 12px 20px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-links li:hover {
+    background-color: #34495e;
+}
+
+.nav-links li.active {
+    background-color: #3498db;
+    border-left: 4px solid #2980b9;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    margin-left: 220px;
+    padding: 30px;
+    max-width: 1200px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    font-size: 28px;
+    margin-bottom: 0;
+    color: #333;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.category-nav {
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.category-link {
+    text-decoration: none;
+    color: #777;
+    font-weight: 500;
+    margin-right: 30px;
+    padding-bottom: 5px;
+    position: relative;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.category-link:hover {
+    color: #3498db;
+}
+
+.category-link.active {
+    color: #3498db;
+}
+
+.category-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #3498db;
+    border-radius: 3px;
+}
+
+.meditation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.meditation-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    cursor: pointer;
+}
+
+.meditation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.duration {
+    font-size: 14px;
+    color: #777;
+    background-color: #f0f4ff;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.card-description {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.start-btn {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.start-btn:hover {
+    background-color: #2980b9;
+}
+
+.divider {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 30px 0;
+}
+
+/* Hover Card Styles */
+.hover-card {
+    position: fixed;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    width: 320px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    pointer-events: none;
+}
+
+.hover-card.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hover-card h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #3498db;
+}
+
+.hover-card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.hover-card ul {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.hover-card li {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.hover-card .benefits {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.hover-card .benefit-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.hover-card .benefit-item::before {
+    content: "✓";
+    color: #2ecc71;
+    margin-right: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.hover-card .instructions {
+    background-color: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .mindfulness-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .meditation-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-nav {
+        flex-wrap: wrap;
+    }
+    
+    .category-link {
+        margin-right: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .hover-card {
+        width: 280px;
+    }
+}
