@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './resources.css';
 
-const Resources = ({ onBackToJournal, onNavigate, onLogout }) => {
+const Resources = ({ onNavigate, onLogout }) => {
   const [activeCategory, setActiveCategory] = useState('All Resources');
   const [activeDetail, setActiveDetail] = useState(null);
   const [resourceStatus, setResourceStatus] = useState({});
@@ -181,116 +181,101 @@ const Resources = ({ onBackToJournal, onNavigate, onLogout }) => {
 
   return (
     <div className="resources-container">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div className="logo">
-          <h1>My Journal</h1>
+      {/* Header */}
+      <div className="header">
+        <h1>Mental Health Resources</h1>
+        <div className="user-info">
+          <button className="back-btn" onClick={() => onNavigate('open')}>← Back to Home</button>
+          <div className="avatar">JS</div>
+          <span>John Smith</span>
+          <button className="logout-btn" onClick={onLogout}>Logout</button>
         </div>
-        <ul className="nav-links">
-          <li onClick={onBackToJournal}>Journal</li>
-          <li className="active">Resources</li>
-          <li>Support</li>
-          <li>Mindful</li>
-          <li>Records</li>
-          <li>Logout</li>
-        </ul>
       </div>
-      
-      {/* Main Content */}
-      <div className="main-content">
-        <div className="header">
-          <h1>Mental Health Resources</h1>
-          <div className="user-info">
-            <div className="avatar">JS</div>
-            <span>John Smith</span>
+
+      {/* Progress Section */}
+      <section className="progress-section">
+        <h2>Your Learning Progress</h2>
+        <div className="progress-stats">
+          <div className="stat">
+            <div className="stat-value">2</div>
+            <div className="stat-label">Started</div>
+          </div>
+          <div className="stat">
+            <div className="stat-value">0</div>
+            <div className="stat-label">Completed</div>
+          </div>
+          <div className="stat">
+            <div className="stat-value">6</div>
+            <div className="stat-label">Available</div>
           </div>
         </div>
+      </section>
 
-        {/* Progress Section */}
-        <section className="progress-section">
-          <h2>Your Learning Progress</h2>
-          <div className="progress-stats">
-            <div className="stat">
-              <div className="stat-value">2</div>
-              <div className="stat-label">Started</div>
-            </div>
-            <div className="stat">
-              <div className="stat-value">0</div>
-              <div className="stat-label">Completed</div>
-            </div>
-            <div className="stat">
-              <div className="stat-value">6</div>
-              <div className="stat-label">Available</div>
-            </div>
+      <div className="divider"></div>
+
+      {/* Resource Categories */}
+      <div className="categories">
+        {categories.map(category => (
+          <div
+            key={category}
+            className={`category ${activeCategory === category ? 'active' : ''}`}
+            onClick={() => handleCategoryClick(category)}
+          >
+            {category}
           </div>
-        </section>
+        ))}
+      </div>
 
-        <div className="divider"></div>
+      {/* Resource Detail View */}
+      {renderResourceDetail()}
 
-        {/* Resource Categories */}
-        <div className="categories">
-          {categories.map(category => (
+      {/* Resource Cards */}
+      {!activeDetail && (
+        <div className="resource-cards" id="resourceCards">
+          {filteredResources.map(resource => (
             <div
-              key={category}
-              className={`category ${activeCategory === category ? 'active' : ''}`}
-              onClick={() => handleCategoryClick(category)}
+              key={resource.id}
+              className="resource-card"
+              data-resource={resource.id}
+              onClick={() => showResourceDetail(resource.id)}
             >
-              {category}
+              <h2>{resource.title}</h2>
+              <p className="resource-description">{resource.description}</p>
+              <div className="resource-meta">
+                <div className="resource-duration">
+                  ⏱️ {resource.duration}
+                </div>
+                <div 
+                  className="resource-status"
+                  style={getStatusColor(resourceStatus[resource.id] || resource.status)}
+                >
+                  {resourceStatus[resource.id] || resource.status}
+                </div>
+              </div>
+              <div className="resource-actions">
+                <button
+                  className={`btn ${resourceStatus[resource.id] === 'In Progress' ? 'btn-outline' : 'btn-primary'}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleStartReading(resource.id);
+                  }}
+                >
+                  {resourceStatus[resource.id] === 'In Progress' ? 'Continue' : 'Start Reading'}
+                </button>
+                <button
+                  className="btn btn-outline"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleReviewAgain(resource.id);
+                  }}
+                >
+                  Review
+                </button>
+              </div>
             </div>
           ))}
         </div>
-
-        {/* Resource Detail View */}
-        {renderResourceDetail()}
-
-        {/* Resource Cards */}
-        {!activeDetail && (
-          <div className="resource-cards" id="resourceCards">
-            {filteredResources.map(resource => (
-              <div
-                key={resource.id}
-                className="resource-card"
-                data-resource={resource.id}
-                onClick={() => showResourceDetail(resource.id)}
-              >
-                <h2>{resource.title}</h2>
-                <p className="resource-description">{resource.description}</p>
-                <div className="resource-meta">
-                  <div className="resource-duration">
-                    ⏱️ {resource.duration}
-                  </div>
-                  <div 
-                    className="resource-status"
-                    style={getStatusColor(resourceStatus[resource.id] || resource.status)}
-                  >
-                    {resourceStatus[resource.id] || resource.status}
-                  </div>
-                </div>
-                <div className="resource-actions">
-                  <button
-                    className={`btn ${resourceStatus[resource.id] === 'In Progress' ? 'btn-outline' : 'btn-primary'}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleStartReading(resource.id);
-                    }}
-                  >
-                    {resourceStatus[resource.id] === 'In Progress' ? 'Continue' : 'Start Reading'}
-                  </button>
-                  <button
-                    className="btn btn-outline"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleReviewAgain(resource.id);
-                    }}
-                  >
-                    Review
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 };

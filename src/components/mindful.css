@@ -1,302 +1,362 @@
 .mindfulness-container {
-    display: flex;
-    min-height: 100vh;
-    background-color: #f5f7fa;
-    color: #333;
-    line-height: 1.6;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Sidebar */
-.sidebar {
-    width: 220px;
-    background-color: #2c3e50;
-    color: white;
-    padding: 20px 0;
-    position: fixed;
-    height: 100vh;
-    overflow-y: auto;
-}
-
-.logo {
-    padding: 0 20px 20px;
-    border-bottom: 1px solid #34495e;
-    margin-bottom: 20px;
-}
-
-.logo h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-
-.nav-links {
-    list-style: none;
-}
-
-.nav-links li {
-    padding: 12px 20px;
-    margin: 5px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.nav-links li:hover {
-    background-color: #34495e;
-}
-
-.nav-links li.active {
-    background-color: #3498db;
-    border-left: 4px solid #2980b9;
-}
-
-/* Main content */
-.main-content {
-    flex: 1;
-    margin-left: 220px;
-    padding: 30px;
-    max-width: 1200px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Arial', sans-serif;
+  padding: 2rem;
+  color: white;
 }
 
 /* Header */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
-.page-title {
-    font-size: 28px;
-    margin-bottom: 0;
-    color: #333;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header h1 {
+  color: rgb(0, 0, 0);
+  font-size: 2.5rem;
+  margin: 0;
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
 }
 
 .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #3498db;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
+.back-btn, .logout-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover, .logout-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Category Navigation */
 .category-nav {
-    display: flex;
-    margin-bottom: 30px;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 15px;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
 }
 
 .category-link {
-    text-decoration: none;
-    color: #777;
-    font-weight: 500;
-    margin-right: 30px;
-    padding-bottom: 5px;
-    position: relative;
-    cursor: pointer;
-    transition: color 0.3s;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  min-width: 120px;
 }
 
 .category-link:hover {
-    color: #3498db;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .category-link.active {
-    color: #3498db;
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-.category-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -16px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #3498db;
-    border-radius: 3px;
+/* Sessions List */
+.sessions-list {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.meditation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
+.session-item {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.meditation-card {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
-    cursor: pointer;
+.session-item:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-.meditation-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.session-item-content {
+  flex: 1;
 }
 
-.card-title {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.session-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 0.5rem 0;
+  color: white;
+  font-size: 1.3rem;
 }
 
-.duration {
-    font-size: 14px;
-    color: #777;
-    background-color: #f0f4ff;
-    padding: 4px 10px;
-    border-radius: 20px;
+.session-duration-badge {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
 }
 
-.card-description {
-    color: #666;
-    margin-bottom: 20px;
-    font-size: 15px;
+.session-description {
+  margin: 0 0 0.5rem 0;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
 }
 
-.start-btn {
-    display: inline-block;
-    background-color: #3498db;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color 0.3s;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
+.session-type-indicator {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  display: inline-block;
 }
 
-.start-btn:hover {
-    background-color: #2980b9;
+.start-session-btn {
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
 }
 
-.divider {
-    height: 1px;
-    background-color: #e0e0e0;
-    margin: 30px 0;
+.start-session-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateX(5px);
 }
 
-/* Hover Card Styles */
-.hover-card {
-    position: fixed;
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    width: 320px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
-    pointer-events: none;
+/* Active Session */
+.active-session {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.hover-card.active {
-    opacity: 1;
-    visibility: visible;
+.session-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-.hover-card h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #3498db;
+.session-header h2 {
+  margin: 1rem 0 0.5rem 0;
+  color: white;
+  font-size: 2rem;
 }
 
-.hover-card p {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 10px;
+.session-meta {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.hover-card ul {
-    padding-left: 20px;
-    margin-bottom: 10px;
+.session-progress {
+  margin-bottom: 2rem;
 }
 
-.hover-card li {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
 }
 
-.hover-card .benefits {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #f0f0f0;
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #45a049);
+  transition: width 0.3s ease;
 }
 
-.hover-card .benefit-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 14px;
+.session-timer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
-.hover-card .benefit-item::before {
-    content: "✓";
-    color: #2ecc71;
-    margin-right: 8px;
-    font-size: 14px;
-    font-weight: bold;
+.session-content {
+  text-align: center;
+  margin-bottom: 2rem;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hover-card .instructions {
-    background-color: #f9f9f9;
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 13px;
+/* Breathing Animation */
+.breathing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
+.breathing-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  transition: all 4s ease-in-out;
+}
+
+.breathing-circle.expand {
+  animation: breatheIn 4s ease-in-out infinite;
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.breathing-circle.contract {
+  animation: breatheOut 4s ease-in-out infinite;
+  background: rgba(33, 150, 243, 0.3);
+}
+
+.breathing-circle.hold {
+  background: rgba(255, 193, 7, 0.3);
+}
+
+.breathing-instruction {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+}
+
+@keyframes breatheIn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+@keyframes breatheOut {
+  0%, 100% { transform: scale(1.3); }
+  50% { transform: scale(1); }
+}
+
+/* Guided Meditation */
+.guided-container {
+  text-align: center;
+}
+
+.current-step {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.guided-instruction {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+  line-height: 1.6;
+}
+
+/* Session Controls */
+.session-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.control-btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  color: rgb(0, 0, 0);
+}
+
+.control-btn.pause {
+  background: #ff9800;
+}
+
+.control-btn.resume {
+  background: #4caf50;
+}
+
+.control-btn.end {
+  background: #f44336;
+}
+
+.control-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .mindfulness-container {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-    
-    .main-content {
-        margin-left: 0;
-    }
-    
-    .meditation-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .category-nav {
-        flex-wrap: wrap;
-    }
-    
-    .category-link {
-        margin-right: 15px;
-        margin-bottom: 10px;
-    }
-    
-    .hover-card {
-        width: 280px;
-    }
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .category-nav {
+    flex-wrap: wrap;
+  }
+  
+  .session-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .session-controls {
+    flex-direction: column;
+  }
+  
+  .breathing-circle {
+    width: 120px;
+    height: 120px;
+    font-size: 1rem;
+  }
 }

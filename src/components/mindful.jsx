@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './mindful.css';
 
 const Mindfulness = ({ onNavigate, onLogout }) => {
   const [activeCategory, setActiveCategory] = useState('breathing');
-  const [hoverCard, setHoverCard] = useState({ show: false, content: null, position: { x: 0, y: 0 } });
+  const [activeSession, setActiveSession] = useState(null);
+  const [sessionProgress, setSessionProgress] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
 
   const categories = [
     { id: 'breathing', label: 'Breathing' },
@@ -16,334 +20,335 @@ const Mindfulness = ({ onNavigate, onLogout }) => {
       id: 'breathing-478',
       title: '4-7-8 Breathing',
       description: 'A simple breathing technique to reduce anxiety and promote relaxation',
-      duration: null,
-      category: 'breathing'
+      duration: '5 min',
+      category: 'breathing',
+      type: 'breathing',
+      steps: [
+        { type: 'inhale', duration: 4, instruction: 'Inhale through your nose' },
+        { type: 'hold', duration: 7, instruction: 'Hold your breath' },
+        { type: 'exhale', duration: 8, instruction: 'Exhale through your mouth' }
+      ],
+      totalDuration: 300,
+      info: {
+        title: '4-7-8 Breathing Technique',
+        description: 'This technique involves breathing in for 4 seconds, holding for 7 seconds, and exhaling for 8 seconds. Developed by Dr. Andrew Weil, it\'s based on pranayama, an ancient yogic practice that helps regulate the breath.',
+        instructions: [
+          'Inhale quietly through your nose for 4 seconds',
+          'Hold your breath for 7 seconds',
+          'Exhale completely through your mouth for 8 seconds',
+          'Repeat this cycle 3-7 times'
+        ],
+        benefits: [
+          'Reduces anxiety and stress quickly',
+          'Helps with sleep issues and insomnia',
+          'Promotes relaxation response',
+          'Improves oxygen circulation',
+          'Calms the nervous system'
+        ],
+        tips: [
+          'Practice in a quiet place where you won\'t be disturbed',
+          'Sit with your back straight or lie down comfortably',
+          'Place the tip of your tongue against the roof of your mouth',
+          'Exhale completely through your mouth between cycles'
+        ]
+      }
     },
     {
       id: 'box-breathing',
       title: 'Box Breathing',
       description: 'Equal count breathing pattern used by Navy SEALs for stress management',
-      duration: null,
-      category: 'breathing'
+      duration: '5 min',
+      category: 'breathing',
+      type: 'breathing',
+      steps: [
+        { type: 'inhale', duration: 4, instruction: 'Inhale through your nose' },
+        { type: 'hold', duration: 4, instruction: 'Hold your breath' },
+        { type: 'exhale', duration: 4, instruction: 'Exhale through your mouth' },
+        { type: 'hold', duration: 4, instruction: 'Hold your breath' }
+      ],
+      totalDuration: 300,
+      info: {
+        title: 'Box Breathing Technique',
+        description: 'Also known as square breathing or four-square breathing, this technique involves equal durations for each phase of breathing. It\'s widely used by military personnel, athletes, and professionals to maintain calm under pressure.',
+        instructions: [
+          'Inhale through your nose for 4 seconds',
+          'Hold your breath for 4 seconds',
+          'Exhale through your mouth for 4 seconds',
+          'Hold your breath for 4 seconds',
+          'Repeat for several minutes'
+        ],
+        benefits: [
+          'Improves focus and concentration',
+          'Reduces stress and anxiety',
+          'Balances the autonomic nervous system',
+          'Enhances mental clarity and decision-making',
+          'Promotes emotional regulation'
+        ],
+        tips: [
+          'Visualize drawing a square with each breath cycle',
+          'Practice during stressful situations to regain composure',
+          'Use it as a quick reset during busy workdays',
+          'Combine with mindfulness for enhanced benefits'
+        ]
+      }
     },
     {
       id: 'body-scan',
       title: 'Full Body Scan',
       description: 'Progressive relaxation technique to release tension from head to toe',
-      duration: null,
-      category: 'body-scan'
-    },
-    {
-      id: 'quick-body-check',
-      title: 'Quick Body Check',
-      description: 'Brief body awareness exercise perfect for busy schedules',
-      duration: '500',
-      category: 'body-scan'
-    },
-    {
-      id: 'ocean-waves',
-      title: 'Ocean Waves',
-      description: 'Gentle ocean sounds to help you relax and focus',
-      duration: '2000',
-      category: 'sounds'
-    },
-    {
-      id: 'forest-rain',
-      title: 'Forest Rain',
-      description: 'Peaceful rainfall in a forest setting',
-      duration: '1500',
-      category: 'sounds'
+      duration: '10 min',
+      category: 'body-scan',
+      type: 'guided',
+      steps: [
+        { duration: 60, instruction: 'Focus on your feet and toes... release tension' },
+        { duration: 60, instruction: 'Move to your ankles and calves... let go of stress' },
+        { duration: 60, instruction: 'Bring awareness to your knees and thighs... relax' },
+        { duration: 60, instruction: 'Focus on your hips and lower back... release' },
+        { duration: 60, instruction: 'Move to your stomach and chest... breathe deeply' },
+        { duration: 60, instruction: 'Bring awareness to your shoulders... let them drop' },
+        { duration: 60, instruction: 'Focus on your arms and hands... release tension' },
+        { duration: 60, instruction: 'Move to your neck and throat... relax' },
+        { duration: 60, instruction: 'Bring awareness to your face and head... release' },
+        { duration: 60, instruction: 'Scan your entire body... complete relaxation' }
+      ],
+      totalDuration: 600,
+      info: {
+        title: 'Full Body Scan Meditation',
+        description: 'This mindfulness practice involves systematically focusing attention on different parts of the body to develop awareness and release physical tension. It helps bridge the connection between mind and body.',
+        instructions: [
+          'Lie down comfortably or sit in a relaxed position',
+          'Close your eyes and take a few deep breaths',
+          'Bring awareness to your feet and toes, noticing any sensations',
+          'Slowly move attention up through each part of your body',
+          'Notice sensations without judgment - warmth, tension, relaxation',
+          'Release tension in each area as you focus on it',
+          'Complete the scan from head to toe'
+        ],
+        benefits: [
+          'Reduces physical tension and muscle stiffness',
+          'Increases body awareness and interoception',
+          'Promotes deep relaxation and stress reduction',
+          'Improves sleep quality',
+          'Enhances mind-body connection'
+        ],
+        tips: [
+          'Practice in a quiet, comfortable environment',
+          'Use a gentle, non-judgmental attitude toward sensations',
+          'If your mind wanders, gently return to body awareness',
+          'Practice regularly to develop greater body sensitivity',
+          'Combine with deep breathing for enhanced relaxation'
+        ]
+      }
     }
   ];
 
-  const hoverCards = {
-    breathingCategory: {
-      title: 'Breathing Exercises',
-      content: 'Breathing techniques help calm your nervous system and reduce stress. These exercises focus on controlling your breath to influence your mental state.',
-      benefits: [
-        'Reduces anxiety and stress',
-        'Improves focus and concentration',
-        'Lowers blood pressure',
-        'Enhances emotional regulation'
-      ]
-    },
-    breathing478: {
-      title: '4-7-8 Breathing Technique',
-      content: 'This technique involves breathing in for 4 seconds, holding for 7 seconds, and exhaling for 8 seconds.',
-      instructions: [
-        'Inhale quietly through your nose for 4 seconds',
-        'Hold your breath for 7 seconds',
-        'Exhale completely through your mouth for 8 seconds',
-        'Repeat 3-7 times'
-      ],
-      benefits: [
-        'Promotes relaxation',
-        'Reduces anxiety quickly',
-        'Helps with sleep issues'
-      ]
-    },
-    boxBreathing: {
-      title: 'Box Breathing Technique',
-      content: 'Also known as square breathing, this technique involves equal durations for each phase of breathing.',
-      instructions: [
-        'Inhale through your nose for 4 seconds',
-        'Hold your breath for 4 seconds',
-        'Exhale through your mouth for 4 seconds',
-        'Hold your breath for 4 seconds',
-        'Repeat for several minutes'
-      ],
-      benefits: [
-        'Improves focus under stress',
-        'Balances the nervous system',
-        'Enhances mental clarity'
-      ]
-    },
-    bodyScan: {
-      title: 'Full Body Scan Meditation',
-      content: 'This practice involves systematically focusing attention on different parts of the body to release tension.',
-      instructions: [
-        'Lie down comfortably and close your eyes',
-        'Bring awareness to your feet and toes',
-        'Slowly move attention up through your legs, torso, arms, and head',
-        'Notice sensations without judgment',
-        'Release tension in each area as you focus on it'
-      ],
-      benefits: [
-        'Reduces physical tension',
-        'Increases body awareness',
-        'Promotes deep relaxation'
-      ]
-    },
-    quickBodyCheck: {
-      title: 'Quick Body Check',
-      content: 'A rapid scan of your body to identify areas of tension and release them quickly.',
-      instructions: [
-        'Take three deep breaths',
-        'Quickly scan from head to toe',
-        'Notice any areas of tension',
-        'Breathe into those areas and release tension',
-        'Return to your activity feeling refreshed'
-      ],
-      benefits: [
-        'Takes only 30-60 seconds',
-        'Reduces immediate stress',
-        'Increases present-moment awareness'
-      ]
-    },
-    oceanWaves: {
-      title: 'Ocean Waves Sound Meditation',
-      content: 'Using the rhythmic sound of ocean waves to calm the mind and promote relaxation.',
-      instructions: [
-        'Find a comfortable position',
-        'Close your eyes and focus on the sound of waves',
-        'Let your breathing sync with the wave rhythm',
-        'When your mind wanders, gently return to the sounds',
-        'Continue for the duration of the session'
-      ],
-      benefits: [
-        'Induces relaxation response',
-        'Masks distracting noises',
-        'Improves sleep quality'
-      ]
-    },
-    forestRain: {
-      title: 'Forest Rain Sound Meditation',
-      content: 'Immersive experience of gentle rainfall in a forest environment to promote calmness.',
-      instructions: [
-        'Sit or lie down comfortably',
-        'Imagine yourself in a peaceful forest',
-        'Focus on the sound of raindrops on leaves',
-        'Breathe deeply and let tension melt away',
-        'Visualize the forest cleansing your mind'
-      ],
-      benefits: [
-        'Reduces mental chatter',
-        'Connects with nature',
-        'Enhances creative thinking'
-      ]
+  useEffect(() => {
+    let interval;
+    if (isPlaying && activeSession) {
+      interval = setInterval(() => {
+        setTimer(prev => {
+          const newTime = prev + 1;
+          const progress = (newTime / activeSession.totalDuration) * 100;
+          setSessionProgress(progress);
+          
+          if (activeSession.type === 'guided' || activeSession.type === 'breathing') {
+            let timeElapsed = 0;
+            for (let i = 0; i < activeSession.steps.length; i++) {
+              timeElapsed += activeSession.steps[i].duration;
+              if (newTime <= timeElapsed) {
+                if (i !== currentStep) {
+                  setCurrentStep(i);
+                }
+                break;
+              }
+            }
+          }
+          
+          if (newTime >= activeSession.totalDuration) {
+            handleEndSession();
+            return 0;
+          }
+          
+          return newTime;
+        });
+      }, 1000);
     }
-  };
+    
+    return () => clearInterval(interval);
+  }, [isPlaying, activeSession, currentStep]);
 
   const handleCategoryClick = (categoryId) => {
     setActiveCategory(categoryId);
   };
 
-  const handleStartSession = (sessionTitle) => {
-    alert(`Starting session: ${sessionTitle}`);
-    // In a real app, this would navigate to the meditation session page
+  const handleStartSession = (session) => {
+    setActiveSession(session);
+    setTimer(0);
+    setSessionProgress(0);
+    setCurrentStep(0);
+    setIsPlaying(true);
   };
 
-  const handleMouseEnter = (cardKey, e) => {
-    const rect = e.target.getBoundingClientRect();
-    setHoverCard({
-      show: true,
-      content: hoverCards[cardKey],
-      position: {
-        x: e.clientX - 150,
-        y: e.clientY - 200
-      }
-    });
+  const handlePauseSession = () => {
+    setIsPlaying(false);
   };
 
-  const handleMouseLeave = () => {
-    setHoverCard({ show: false, content: null, position: { x: 0, y: 0 } });
+  const handleResumeSession = () => {
+    setIsPlaying(true);
   };
 
-  const handleMouseMove = (e) => {
-    if (hoverCard.show) {
-      setHoverCard(prev => ({
-        ...prev,
-        position: {
-          x: e.clientX - 150,
-          y: e.clientY - 200
-        }
-      }));
+  const handleEndSession = () => {
+    setIsPlaying(false);
+    setActiveSession(null);
+    setTimer(0);
+    setSessionProgress(0);
+    setCurrentStep(0);
+    if (activeSession) {
+      alert(`Great job! You completed ${activeSession.title}`);
     }
   };
 
-  const filteredSessions = activeCategory === 'breathing' 
-    ? meditationSessions.filter(session => session.category === 'breathing')
-    : activeCategory === 'body-scan'
-    ? meditationSessions.filter(session => session.category === 'body-scan')
-    : meditationSessions.filter(session => session.category === 'sounds');
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  const getCurrentInstruction = () => {
+    if (!activeSession?.steps) return '';
+    return activeSession.steps[currentStep]?.instruction || '';
+  };
+
+  const getBreathingVisual = () => {
+    if (!activeSession?.steps) return null;
+    const currentBreathingStep = activeSession.steps[currentStep];
+    
+    switch (currentBreathingStep?.type) {
+      case 'inhale':
+        return <div className="breathing-circle expand">Breathe In</div>;
+      case 'exhale':
+        return <div className="breathing-circle contract">Breathe Out</div>;
+      case 'hold':
+        return <div className="breathing-circle hold">Hold</div>;
+      default:
+        return null;
+    }
+  };
+
+  const filteredSessions = meditationSessions.filter(session => session.category === activeCategory);
 
   return (
     <div className="mindfulness-container">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div className="logo">
-          <h1>MindCare</h1>
+      {/* Header */}
+      <div className="header">
+        <div className="header-left">
+          <h1>Mindfulness & Meditation</h1>
         </div>
-        <ul className="nav-links">
-          <li onClick={() => onNavigate?.('journal')}>Journal</li>
-          <li onClick={() => onNavigate?.('support')}>Support</li>
-          <li onClick={() => onNavigate?.('resources')}>Resources</li>
-          <li className="active">Mindful</li>
-          <li onClick={() => onNavigate?.('records')}>Records</li>
-          <li onClick={onLogout}>Logout</li>
-        </ul>
+        <div className="user-info">
+          <button className="back-btn" onClick={() => onNavigate('open')}>← Back to Home</button>
+          <div className="avatar">JS</div>
+          <span>John Smith</span>
+          <button className="logout-btn" onClick={onLogout}>Logout</button>
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="main-content">
-        <div className="header">
-          <h1 className="page-title">Mindfulness & Meditation</h1>
-          <div className="user-info">
-            <div className="avatar">JS</div>
-            <span>John Smith</span>
+      {/* Active Session View */}
+      {activeSession && (
+        <div className="active-session">
+          <div className="session-header">
+            <button className="back-btn" onClick={handleEndSession}>← Back to Exercises</button>
+            <h2>{activeSession.title}</h2>
+            <div className="session-meta">
+              <span className="session-duration">{activeSession.duration}</span>
+              <span className="session-type">{activeSession.type}</span>
+            </div>
+          </div>
+          
+          <div className="session-progress">
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${sessionProgress}%` }}></div>
+            </div>
+            <div className="session-timer">
+              {formatTime(timer)} / {formatTime(activeSession.totalDuration)}
+            </div>
+          </div>
+          
+          <div className="session-content">
+            {activeSession.type === 'breathing' && (
+              <div className="breathing-container">
+                {getBreathingVisual()}
+                <div className="breathing-instruction">
+                  {getCurrentInstruction()}
+                </div>
+              </div>
+            )}
+            
+            {activeSession.type === 'guided' && (
+              <div className="guided-container">
+                <div className="current-step">
+                  Step {currentStep + 1} of {activeSession.steps.length}
+                </div>
+                <div className="guided-instruction">
+                  {getCurrentInstruction()}
+                </div>
+              </div>
+            )}
+          </div>
+          
+          <div className="session-controls">
+            {isPlaying ? (
+              <button className="control-btn pause" onClick={handlePauseSession}>
+                ⏸️ Pause
+              </button>
+            ) : (
+              <button className="control-btn resume" onClick={handleResumeSession}>
+                ▶️ Resume
+              </button>
+            )}
+            <button className="control-btn end" onClick={handleEndSession}>
+              ⏹️ End Session
+            </button>
           </div>
         </div>
-        
-        <div className="category-nav">
-          {categories.map(category => (
-            <div
-              key={category.id}
-              className={`category-link ${activeCategory === category.id ? 'active' : ''}`}
-              onClick={() => handleCategoryClick(category.id)}
-              onMouseEnter={(e) => handleMouseEnter('breathingCategory', e)}
-              onMouseLeave={handleMouseLeave}
-              onMouseMove={handleMouseMove}
-            >
-              {category.label}
-            </div>
-          ))}
-        </div>
-        
-        <div className="meditation-grid">
-          {filteredSessions.map(session => (
-            <div 
-              key={session.id} 
-              className="meditation-card"
-              onMouseEnter={(e) => handleMouseEnter(
-                session.id === 'breathing-478' ? 'breathing478' :
-                session.id === 'box-breathing' ? 'boxBreathing' :
-                session.id === 'body-scan' ? 'bodyScan' :
-                session.id === 'quick-body-check' ? 'quickBodyCheck' :
-                session.id === 'ocean-waves' ? 'oceanWaves' : 'forestRain', 
-                e
-              )}
-              onMouseLeave={handleMouseLeave}
-              onMouseMove={handleMouseMove}
-            >
-              <h2 className="card-title">
-                {session.title}
-                {session.duration && <span className="duration">{session.duration}</span>}
-              </h2>
-              <p className="card-description">{session.description}</p>
-              <button 
-                className="start-btn"
-                onClick={() => handleStartSession(session.title)}
-              >
-                Start Session
-              </button>
-            </div>
-          ))}
-        </div>
-        
-        <div className="divider"></div>
-        
-        <h2 className="page-title">Quick Exercises</h2>
-        
-        <div className="meditation-grid">
-          {meditationSessions.filter(session => session.duration).map(session => (
-            <div 
-              key={session.id} 
-              className="meditation-card"
-              onMouseEnter={(e) => handleMouseEnter(
-                session.id === 'quick-body-check' ? 'quickBodyCheck' :
-                session.id === 'ocean-waves' ? 'oceanWaves' : 'forestRain', 
-                e
-              )}
-              onMouseLeave={handleMouseLeave}
-              onMouseMove={handleMouseMove}
-            >
-              <h2 className="card-title">
-                {session.title}
-                <span className="duration">{session.duration}</span>
-              </h2>
-              <p className="card-description">{session.description}</p>
-              <button 
-                className="start-btn"
-                onClick={() => handleStartSession(session.title)}
-              >
-                Start Session
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
 
-      {/* Hover Card */}
-      {hoverCard.show && hoverCard.content && (
-        <div 
-          className="hover-card active"
-          style={{
-            left: `${hoverCard.position.x}px`,
-            top: `${hoverCard.position.y}px`
-          }}
-        >
-          <h4>{hoverCard.content.title}</h4>
-          <p>{hoverCard.content.content}</p>
+      {/* Main Content (only shown when no active session) */}
+      {!activeSession && (
+        <>
+          <div className="category-nav">
+            {categories.map(category => (
+              <div
+                key={category.id}
+                className={`category-link ${activeCategory === category.id ? 'active' : ''}`}
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                {category.label}
+              </div>
+            ))}
+          </div>
           
-          {hoverCard.content.instructions && (
-            <div className="instructions">
-              <strong>How to practice:</strong>
-              <ol>
-                {hoverCard.content.instructions.map((instruction, index) => (
-                  <li key={index}>{instruction}</li>
-                ))}
-              </ol>
-            </div>
-          )}
-          
-          {hoverCard.content.benefits && (
-            <div className="benefits">
-              {hoverCard.content.benefits.map((benefit, index) => (
-                <div key={index} className="benefit-item">{benefit}</div>
-              ))}
-            </div>
-          )}
-        </div>
+          <div className="sessions-list">
+            {filteredSessions.map(session => (
+              <div 
+                key={session.id} 
+                className="session-item"
+                onClick={() => handleStartSession(session)}
+              >
+                <div className="session-item-content">
+                  <h3 className="session-title">
+                    {session.title}
+                    <span className="session-duration-badge">{session.duration}</span>
+                  </h3>
+                  <p className="session-description">{session.description}</p>
+                  <div className="session-type-indicator">{session.type}</div>
+                </div>
+                <button className="start-session-btn">
+                  Start Session →
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

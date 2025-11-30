@@ -1,10 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import './records.css';
 
-const Records = ({ onLogout, onNavigate, onBackToJournal }) => {
+const Records = ({ onLogout, onNavigate }) => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [hoverCard, setHoverCard] = useState({ show: false, content: null, position: { x: 0, y: 0 } });
   const [gratitudeChecked, setGratitudeChecked] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  // Static sample activities (PRESERVED)
+  const sampleActivities = [
+    {
+      id: 1,
+      title: 'Feeling Better Today',
+      description: 'Wrote about therapy progress and anxiety management',
+      date: '10/5/2024 at 02:30 PM',
+      type: 'journal',
+      tags: ['calm', 'hopeful', 'reflection']
+    },
+    {
+      id: 2,
+      title: 'Box Breathing Session',
+      description: 'Completed 10-minute breathing exercise',
+      date: '10/5/2024 at 09:15 AM',
+      type: 'mindful',
+      tags: ['10 min']
+    },
+    {
+      id: 3,
+      title: 'Peer Support Conversation',
+      description: 'Had a meaningful conversation about coping strategies',
+      date: '10/4/2024 at 05:45 PM',
+      type: 'support',
+      tags: []
+    }
+  ];
+
+  // Backend activities list (MERGED with static)
+  const [activities, setActivities] = useState(sampleActivities);
+
+  // GET data from backend
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const response = await fetch("http://localhost:5000/api/records/all", {
+          headers: { Authorization: token },
+        });
+
+        const data = await response.json();
+
+        // Add backend activities below static ones
+        const merged = [...sampleActivities, ...data];
+        setActivities(merged);
+      } catch (err) {
+        console.error("Error fetching activities", err);
+      }
+    };
+
+    fetchActivities();
+  }, []);
 
   const filters = [
     { id: 'all', label: 'All' },
@@ -13,33 +70,7 @@ const Records = ({ onLogout, onNavigate, onBackToJournal }) => {
     { id: 'mindful', label: 'Mindful' }
   ];
 
-  const activities = [
-    {
-      id: 1,
-      title: 'Feeling Better Today',
-      description: 'Wrote about therapy progress and anxiety management',
-      date: '10/5/2024 at 02:30 PM',
-      type: 'Journal',
-      tags: ['calm', 'hopeful', 'reflection']
-    },
-    {
-      id: 2,
-      title: 'Box Breathing Session',
-      description: 'Completed 10-minute breathing exercise',
-      date: '10/5/2024 at 09:15 AM',
-      type: 'Mindful',
-      tags: ['10 min']
-    },
-    {
-      id: 3,
-      title: 'Peer Support Conversation',
-      description: 'Had a meaningful conversation about coping strategies',
-      date: '10/4/2024 at 05:45 PM',
-      type: 'Support',
-      tags: []
-    }
-  ];
-
+  // Hover cards (PRESERVED COMPLETELY)
   const hoverCards = {
     journalStat: {
       title: 'Journal Entries',
@@ -107,20 +138,18 @@ const Records = ({ onLogout, onNavigate, onBackToJournal }) => {
     }
   };
 
-  const handleFilterClick = (filterId) => {
-    setActiveFilter(filterId);
-    console.log(`Filtering by: ${filterId}`);
-  };
+  // FILTER
+  const filteredActivities =
+    activeFilter === 'all'
+      ? activities
+      : activities.filter(a => a.type.toLowerCase() === activeFilter);
 
+  // HOVER
   const handleMouseEnter = (cardKey, e) => {
-    const rect = e.target.getBoundingClientRect();
     setHoverCard({
       show: true,
       content: hoverCards[cardKey],
-      position: {
-        x: e.clientX - 150,
-        y: e.clientY - 200
-      }
+      position: { x: e.clientX - 150, y: e.clientY - 200 }
     });
   };
 
@@ -132,178 +161,117 @@ const Records = ({ onLogout, onNavigate, onBackToJournal }) => {
     if (hoverCard.show) {
       setHoverCard(prev => ({
         ...prev,
-        position: {
-          x: e.clientX - 150,
-          y: e.clientY - 200
-        }
+        position: { x: e.clientX - 150, y: e.clientY - 200 }
       }));
     }
   };
 
-  const handleGratitudeCheckbox = (checked) => {
-    setGratitudeChecked(checked);
-  };
-
-  const filteredActivities = activeFilter === 'all' 
-    ? activities 
-    : activities.filter(activity => activity.type.toLowerCase() === activeFilter);
-
   return (
     <div className="records-container">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div className="logo">
-          <h1>MindCare</h1>
+
+      {/* Header */}
+      <div className="header">
+        <h1>My Records</h1>
+        <div className="user-info">
+          <button className="back-btn" onClick={() => onNavigate('open')}>← Back to Home</button>
+          <div className="avatar">{user?.firstName?.slice(0,2)?.toUpperCase()}</div>
+          <span>{user?.firstName} {user?.lastName}</span>
+          <button className="logout-btn" onClick={onLogout}>Logout</button>
         </div>
-        <ul className="nav-links">
-  <li onClick={onBackToJournal}>Journal</li> {/* Use onBackToJournal */}
-  <li onClick={() => onNavigate('support')}>Support</li>
-  <li onClick={() => onNavigate('resources')}>Resources</li>
-  <li onClick={() => onNavigate('mindful')}>Mindful</li>
-  <li className="active">Records</li>
-  <li onClick={onLogout}>Logout</li>
-</ul>
-        
       </div>
 
-      {/* Main Content */}
-      <div className="main-content">
-        <div className="header">
-          <h1 className="page-title">My Records</h1>
-          <div className="user-info">
-            <div className="avatar">JS</div>
-            <span>John Smith</span>
-          </div>
-        </div>
-        
-        <div className="stats-grid">
-          <div 
-            className="stat-card" 
-            onMouseEnter={(e) => handleMouseEnter('journalStat', e)}
-            onMouseLeave={handleMouseLeave}
-            onMouseMove={handleMouseMove}
-          >
-            <div className="stat-number">3</div>
-            <div className="stat-label">Journal</div>
-          </div>
-          
-          <div 
-            className="stat-card"
-            onMouseEnter={(e) => handleMouseEnter('supportStat', e)}
-            onMouseLeave={handleMouseLeave}
-            onMouseMove={handleMouseMove}
-          >
-            <div className="stat-number">2</div>
-            <div className="stat-label">Support</div>
-          </div>
-          
-          <div 
-            className="stat-card"
-            onMouseEnter={(e) => handleMouseEnter('mindfulStat', e)}
-            onMouseLeave={handleMouseLeave}
-            onMouseMove={handleMouseMove}
-          >
-            <div className="stat-number">2</div>
-            <div className="stat-label">Mindful</div>
-          </div>
-        </div>
-        
-        <div className="filters">
-          {filters.map(filter => (
-            <button
-              key={filter.id}
-              className={`filter-btn ${activeFilter === filter.id ? 'active' : ''}`}
-              onClick={() => handleFilterClick(filter.id)}
-            >
-              {filter.label}
-            </button>
-          ))}
-        </div>
-        
-        <h2 className="section-title">All Activities</h2>
-        
-        <div className="activity-list">
-          {filteredActivities.map(activity => (
-            <div key={activity.id} className="activity-item">
-              <div 
-                className="activity-title"
-                onMouseEnter={(e) => handleMouseEnter(
-                  activity.title.includes('Feeling Better') ? 'feelingBetter' : 
-                  activity.title.includes('Box Breathing') ? 'boxBreathing' : 'feelingBetter', 
-                  e
-                )}
-                onMouseLeave={handleMouseLeave}
-                onMouseMove={handleMouseMove}
-              >
-                {activity.title}
-              </div>
-              <div className="activity-description">{activity.description}</div>
-              <div className="activity-meta">
-                <div className="activity-date">{activity.date}</div>
-                <div className="activity-type">{activity.type}</div>
-              </div>
-              <div className="activity-tags">
-                {activity.tags.map(tag => (
-                  <span key={tag} className="tag">{tag}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <div className="gratitude-section">
-          <h2 
-            className="gratitude-title"
-            onMouseEnter={(e) => handleMouseEnter('gratitude', e)}
-            onMouseLeave={handleMouseLeave}
-            onMouseMove={handleMouseMove}
-          >
-            Gratitude Practice
-          </h2>
-          <p className="activity-description">Listed three things I'm grateful for today</p>
-          
-          <div className="gratitude-item">
-            <input 
-              type="checkbox" 
-              className="gratitude-checkbox" 
-              checked={gratitudeChecked}
-              onChange={(e) => handleGratitudeCheckbox(e.target.checked)}
-            />
-            <div className="gratitude-content">
-              <div className="gratitude-date">10/3/2024 at 08:00 PM</div>
-              <div className="gratitude-tags">
-                <span className="tag">grateful</span>
-                <span className="tag">positive</span>
-                <span className="tag">gratitude</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div 
-          className="progress-section"
-          onMouseEnter={(e) => handleMouseEnter('progress', e)}
+      {/* Stats */}
+      <div className="stats-grid">
+        <div
+          className="stat-card"
+          onMouseEnter={(e) => handleMouseEnter('journalStat', e)}
           onMouseLeave={handleMouseLeave}
           onMouseMove={handleMouseMove}
         >
-          <h2 className="progress-title">Weekly Progress</h2>
-          <p className="progress-text">You've been active 7 times this week. Keep going! 🚠</p>
-          <div className="progress-emoji">🎉</div>
+          <div className="stat-number">
+            {activities.filter(a => a.type.toLowerCase() === "journal").length}
+          </div>
+          <div className="stat-label">Journal</div>
         </div>
+
+        <div
+          className="stat-card"
+          onMouseEnter={(e) => handleMouseEnter('supportStat', e)}
+          onMouseLeave={handleMouseLeave}
+          onMouseMove={handleMouseMove}
+        >
+          <div className="stat-number">
+            {activities.filter(a => a.type.toLowerCase() === "support").length}
+          </div>
+          <div className="stat-label">Support</div>
+        </div>
+
+        <div
+          className="stat-card"
+          onMouseEnter={(e) => handleMouseEnter('mindfulStat', e)}
+          onMouseLeave={handleMouseLeave}
+          onMouseMove={handleMouseMove}
+        >
+          <div className="stat-number">
+            {activities.filter(a => a.type.toLowerCase() === "mindful").length}
+          </div>
+          <div className="stat-label">Mindful</div>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="filters">
+        {filters.map(filter => (
+          <button
+            key={filter.id}
+            className={`filter-btn ${activeFilter === filter.id ? 'active' : ''}`}
+            onClick={() => setActiveFilter(filter.id)}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
+
+      <h2 className="section-title">All Activities</h2>
+
+      {/* Activity List */}
+      <div className="activity-list">
+        {filteredActivities.map(activity => (
+          <div key={activity._id || activity.id} className="activity-item">
+            <div
+              className="activity-title"
+              onMouseEnter={(e) => handleMouseEnter(
+                activity.title.includes('Feeling Better') ? 'feelingBetter' :
+                activity.title.includes('Box Breathing') ? 'boxBreathing' :
+                activity.title.includes('Gratitude') ? 'gratitude' : 'progress',
+                e
+              )}
+              onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+            >
+              {activity.title}
+            </div>
+            <div className="activity-description">{activity.description}</div>
+            <div className="activity-meta">
+              <div className="activity-date">{activity.date}</div>
+              <div className="activity-type">{activity.type}</div>
+            </div>
+            <div className="activity-tags">
+              {activity.tags?.map(tag => <span key={tag} className="tag">{tag}</span>)}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Hover Card */}
       {hoverCard.show && hoverCard.content && (
-        <div 
+        <div
           className="hover-card active"
-          style={{
-            left: `${hoverCard.position.x}px`,
-            top: `${hoverCard.position.y}px`
-          }}
+          style={{ left: `${hoverCard.position.x}px`, top: `${hoverCard.position.y}px` }}
         >
           <h4>{hoverCard.content.title}</h4>
           <p>{hoverCard.content.content}</p>
-          
+
           {hoverCard.content.details && (
             <div className="details">
               {hoverCard.content.details.map((detail, index) => (
@@ -311,10 +279,10 @@ const Records = ({ onLogout, onNavigate, onBackToJournal }) => {
               ))}
             </div>
           )}
-          
+
           {hoverCard.content.insights && (
             <div className="insights">
-              <strong>Key Insights:</strong>
+              <strong>Insights:</strong>
               <ul>
                 {hoverCard.content.insights.map((insight, index) => (
                   <li key={index}>{insight}</li>

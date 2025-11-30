@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Welcome from './components/welcome';
 import Login from './components/login';
@@ -8,6 +8,7 @@ import Resources from './components/resources';
 import Records from './components/records';
 import Mindfulness from './components/mindful';
 import PeerSupport from './components/support';
+import Open from './components/open';
 
 function App() {
   const [currentView, setCurrentView] = useState('welcome');
@@ -15,12 +16,12 @@ function App() {
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
-    setCurrentView('journal');
+    setCurrentView('open');
   };
 
   const handleSignupSuccess = () => {
     setIsLoggedIn(true);
-    setCurrentView('journal');
+    setCurrentView('open');
   };
 
   const handleLogout = () => {
@@ -30,6 +31,13 @@ function App() {
 
   const renderCurrentView = () => {
     switch (currentView) {
+      case 'open':
+  return (
+    <Open 
+      onLogout={handleLogout}
+      onNavigate={(view) => setCurrentView(view)}
+    />
+  );
       case 'welcome':
         return (
           <Welcome

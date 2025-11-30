@@ -103,108 +103,93 @@ const PeerSupport = ({ onNavigate, onLogout }) => {
 
   return (
     <div className="support-container">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div className="logo">
-          <h1>MindCare</h1>
+      {/* Header */}
+      <div className="header">
+        <h1>Peer Support</h1>
+        <div className="user-info">
+          <button className="back-btn" onClick={() => onNavigate('open')}>← Back to Home</button>
+          <div className="avatar">JS</div>
+          <span>John Smith</span>
+          <button className="logout-btn" onClick={onLogout}>Logout</button>
         </div>
-        <ul className="nav-links">
-          <li onClick={() => onNavigate?.('journal')}>Journal</li>
-          <li className="active">Support</li>
-          <li onClick={() => onNavigate?.('resources')}>Resources</li>
-          <li onClick={() => onNavigate?.('mindful')}>Mindful</li>
-          <li onClick={() => onNavigate?.('records')}>Records</li>
-          <li onClick={onLogout}>Logout</li>
-        </ul>
       </div>
-
-      {/* Main Content */}
-      <div className="main-content">
-        <div className="header">
-          <h1 className="section-title">Peer Support</h1>
-          <div className="user-info">
-            <div className="avatar">JS</div>
-            <span>John Smith</span>
-          </div>
+      
+      <div className="dashboard">
+        <div 
+          className="stat-card"
+          onMouseEnter={(e) => handleMouseEnter('messagesSent', e)}
+          onMouseLeave={handleMouseLeave}
+          onMouseMove={handleMouseMove}
+        >
+          <h3>Messages Sent</h3>
+          <div className="stat-number">{supportData.messagesSent}</div>
         </div>
         
-        <div className="dashboard">
-          <div 
-            className="stat-card"
-            onMouseEnter={(e) => handleMouseEnter('messagesSent', e)}
+        <div 
+          className="stat-card"
+          onMouseEnter={(e) => handleMouseEnter('supportReceived', e)}
+          onMouseLeave={handleMouseLeave}
+          onMouseMove={handleMouseMove}
+        >
+          <h3>Support Received</h3>
+          <div className="stat-number">{supportData.supportReceived}</div>
+        </div>
+      </div>
+      
+      <div className="divider"></div>
+      
+      <h2 className="section-title">Their Actions</h2>
+      
+      <div className="support-section">
+        <h3>Support Received</h3>
+        
+        <div className="support-item">
+          <span 
+            className="support-label"
+            onMouseEnter={(e) => handleMouseEnter('supportReceivedLabel', e)}
             onMouseLeave={handleMouseLeave}
             onMouseMove={handleMouseMove}
           >
-            <h3>Messages Sent</h3>
-            <div className="stat-number">{supportData.messagesSent}</div>
-          </div>
-          
-          <div 
-            className="stat-card"
-            onMouseEnter={(e) => handleMouseEnter('supportReceived', e)}
-            onMouseLeave={handleMouseLeave}
-            onMouseMove={handleMouseMove}
-          >
-            <h3>Support Received</h3>
-            <div className="stat-number">{supportData.supportReceived}</div>
-          </div>
+            Support Received
+          </span>
+          <p className="support-message">
+            {supportData.recentMessages.find(msg => msg.type === 'received')?.message}
+          </p>
+          <p className="support-date">
+            - {supportData.recentMessages.find(msg => msg.type === 'received')?.date}
+          </p>
         </div>
         
         <div className="divider"></div>
         
-        <h2 className="section-title">Their Actions</h2>
+        <h3>My Actions</h3>
         
-        <div className="support-section">
-          <h3>Support Received</h3>
-          
-          <div className="support-item">
-            <span 
-              className="support-label"
-              onMouseEnter={(e) => handleMouseEnter('supportReceivedLabel', e)}
-              onMouseLeave={handleMouseLeave}
-              onMouseMove={handleMouseMove}
-            >
-              Support Received
-            </span>
-            <p className="support-message">
-              {supportData.recentMessages.find(msg => msg.type === 'received')?.message}
-            </p>
-            <p className="support-date">
-              - {supportData.recentMessages.find(msg => msg.type === 'received')?.date}
-            </p>
-          </div>
-          
-          <div className="divider"></div>
-          
-          <h3>My Actions</h3>
-          
-          <div className="support-item">
-            <span 
-              className="support-label my-actions-label"
-              onMouseEnter={(e) => handleMouseEnter('myActionsLabel', e)}
-              onMouseLeave={handleMouseLeave}
-              onMouseMove={handleMouseMove}
-            >
-              My Actions
-            </span>
-            <p className="support-message">
-              {supportData.recentMessages.find(msg => msg.type === 'sent')?.message}
-            </p>
-            <p className="support-date">
-              - {supportData.recentMessages.find(msg => msg.type === 'sent')?.date}
-            </p>
-          </div>
+        <div className="support-item">
+          <span 
+            className="support-label my-actions-label"
+            onMouseEnter={(e) => handleMouseEnter('myActionsLabel', e)}
+            onMouseLeave={handleMouseLeave}
+            onMouseMove={handleMouseMove}
+          >
+            My Actions
+          </span>
+          <p className="support-message">
+            {supportData.recentMessages.find(msg => msg.type === 'sent')?.message}
+          </p>
+          <p className="support-date">
+            - {supportData.recentMessages.find(msg => msg.type === 'sent')?.date}
+          </p>
         </div>
-        
-        <div 
-          className="support-section"
-          onMouseEnter={(e) => handleMouseEnter('recentMessages', e)}
-          onMouseLeave={handleMouseLeave}
-          onMouseMove={handleMouseMove}
-        >
-          <h3>Recent Messages</h3>
-          <p>{supportData.recentMessages.length} messages</p>
-        </div>
+      </div>
+      
+      <div 
+        className="support-section"
+        onMouseEnter={(e) => handleMouseEnter('recentMessages', e)}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
+      >
+        <h3>Recent Messages</h3>
+        <p>{supportData.recentMessages.length} messages</p>
       </div>
 
       {/* Hover Card */}

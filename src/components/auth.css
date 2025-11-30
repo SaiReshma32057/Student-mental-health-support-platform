@@ -1,6 +1,6 @@
 .auth-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #5a6dd8 0%, #7a52c7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,7 +19,7 @@
 .auth-card h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #333;
+  color: #3a3a6f;
   font-size: 1.8rem;
 }
 
@@ -36,13 +36,13 @@
 
 .form-group label {
   margin-bottom: 0.5rem;
-  color: #555;
+  color: #4a4a73;
   font-weight: 500;
 }
 
 .form-group input {
   padding: 12px;
-  border: 2px solid #e1e5e9;
+  border: 2px solid #d7dbf5;
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
@@ -50,11 +50,11 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #6c63ff;
 }
 
 .auth-submit-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6c77ff 0%, #8a65e1 100%);
   color: white;
   border: none;
   padding: 12px;
@@ -73,11 +73,11 @@
 .auth-switch {
   text-align: center;
   margin-top: 2rem;
-  color: #666;
+  color: #5c5c8a;
 }
 
 .switch-link {
-  color: #667eea;
+  color: #6c63ff;
   cursor: pointer;
   font-weight: 600;
   margin-left: 0.5rem;
@@ -90,5 +90,150 @@
 @media (max-width: 480px) {
   .auth-card {
     padding: 2rem 1.5rem;
+  }
+}
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.form-group input.error,
+.form-group select.error {
+  border-color: #e74c3c;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.user-type-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.user-type-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e1e5e9;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-type-btn.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.user-type-fields {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.auth-submit-btn {
+  background: #667eea;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.auth-submit-btn:hover {
+  background: #5a6fd8;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.switch-link {
+  color: #667eea;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  text-decoration: underline;
+}
+
+.switch-link:hover {
+  color: #5a6fd8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .auth-card {
+    padding: 1.5rem;
   }
 }
